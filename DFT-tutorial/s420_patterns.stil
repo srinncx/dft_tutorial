@@ -1,0 +1,115 @@
+STIL 1.0 { Design 2005; }
+Header {
+   Title "  TetraMAX(R)  V-2023.12-i20231127_013657 STIL output";
+   Date "Wed Dec 24 01:11:38 2025";
+   History {
+      Ann {*     Uncollapsed Stuck Fault Summary Report *}
+      Ann {* ----------------------------------------------- *}
+      Ann {* fault class                     code   #faults *}
+      Ann {* ------------------------------  ----  --------- *}
+      Ann {* Detected                         DT         26 *}
+      Ann {* Possibly detected                PT          0 *}
+      Ann {* Undetectable                     UD          0 *}
+      Ann {* ATPG untestable                  AU        592 *}
+      Ann {* Not detected                     ND          0 *}
+      Ann {* ----------------------------------------------- *}
+      Ann {* total faults                               618 *}
+      Ann {* test coverage                             4.21% *}
+      Ann {* ----------------------------------------------- *}
+      Ann {*  *}
+      Ann {*            Pattern Summary Report *}
+      Ann {* ----------------------------------------------- *}
+      Ann {* #internal patterns                           3 *}
+      Ann {*     #basic_scan patterns                     3 *}
+      Ann {* ----------------------------------------------- *}
+      Ann {*  *}
+      Ann {* rule  severity  #fails  description *}
+      Ann {* ----  --------  ------  --------------------------------- *}
+      Ann {* B10   warning        4  unconnected module internal net *}
+      Ann {* C2    warning       16  unstable nonscan DFF when clocks off  (nomask) *}
+      Ann {*  *}
+      Ann {* There are no clocks *}
+      Ann {* There are no constraint ports *}
+      Ann {* There are no equivalent pins *}
+      Ann {* There are no net connections *}
+      Ann {* top_module_name = s420 *}
+      Ann {* Unified STIL Flow *}
+      Ann {* min_n_shifts = 1 *}
+      Ann {* serial_flag = 1 *}
+      Ann {* PSDF = NO_PSD_FILE *}
+      Ann {* PSDS = 0 *}
+      Ann {* PSDA = #3#0#0/0 *}
+   }
+}
+Signals {
+   "CK" In; "C_0" In; "C_1" In; "C_10" In; "C_11" In; "C_12" In; "C_13" In; "C_14" In;
+   "C_15" In; "C_16" In; "C_2" In; "C_3" In; "C_4" In; "C_5" In; "C_6" In; "C_7" In;
+   "C_8" In; "C_9" In; "P_0" In; "Z" Out;
+}
+SignalGroups {
+   "_default_In_Timing_" = '"CK" + "C_0" + "C_1" + "C_10" + "C_11" + "C_12" + "C_13"
+   + "C_14" + "C_15" + "C_16" + "C_2" + "C_3" + "C_4" + "C_5" + "C_6" + "C_7" + "C_8"
+   + "C_9" + "P_0"'; // #signals=19
+   "_pi" = '"CK" + "C_0" + "C_1" + "C_10" + "C_11" + "C_12" + "C_13" + "C_14" + "C_15"
+   + "C_16" + "C_2" + "C_3" + "C_4" + "C_5" + "C_6" + "C_7" + "C_8" + "C_9" + "P_0"';
+   // #signals=19
+   "_in" = '"CK" + "C_0" + "C_1" + "C_10" + "C_11" + "C_12" + "C_13" + "C_14" + "C_15"
+   + "C_16" + "C_2" + "C_3" + "C_4" + "C_5" + "C_6" + "C_7" + "C_8" + "C_9" + "P_0"';
+   // #signals=19
+   "_default_Out_Timing_" = '"Z"'; // #signals=1
+   "_po" = '"Z"'; // #signals=1
+   "_out" = '"Z"'; // #signals=1
+}
+Timing {
+   WaveformTable "_default_WFT_" {
+      Period '100ns';
+      Waveforms {
+         "_default_In_Timing_" { 0 { '0ns' D; } }
+         "_default_In_Timing_" { 1 { '0ns' U; } }
+         "_default_In_Timing_" { Z { '0ns' Z; } }
+         "_default_In_Timing_" { N { '0ns' N; } }
+         "_default_Out_Timing_" { X { '0ns' X; } }
+         "_default_Out_Timing_" { H { '0ns' X; '40ns' H; } }
+         "_default_Out_Timing_" { T { '0ns' X; '40ns' T; } }
+         "_default_Out_Timing_" { L { '0ns' X; '40ns' L; } }
+      }
+   }
+}
+ScanStructures {
+   // Uncomment and modify the following to suit your design
+   // ScanChain "chain_name" { ScanIn "chain_input_name"; ScanOut "chain_output_name"; }
+}
+PatternBurst "_burst_" {
+   PatList { "_pattern_" {
+   }
+}}
+PatternExec {
+   PatternBurst "_burst_";
+}
+Procedures {
+   "capture" {
+      W "_default_WFT_";
+      C { "_po"=X; }
+      "forcePI": V { "_pi"=\r19 # ; }
+      "measurePO": V { "_po"=#; }
+   }
+   // Uncomment and modify the following to suit your design
+   // load_unload {
+      // V { } // force clocks off and scan enable pins active
+      // Shift { V { _si=#; _so=#; }} // pulse shift clocks
+   // }
+}
+MacroDefs {
+}
+Pattern "_pattern_" {
+   W "_default_WFT_";
+   "precondition all Signals": C { "_pi"=\r19 0 ; "_po"=X; }
+   "pattern 0": Call "capture" { 
+      "_pi"=1100000000000000001; "_po"=H; }
+   "pattern 1": Call "capture" { 
+      "_pi"=1110011111111000000; "_po"=L; }
+   "pattern 2": Call "capture" { 
+      "_pi"=1000000000000000001; "_po"=L; }
+}
+
+// Patterns reference 6 V statements, generating 6 test cycles
